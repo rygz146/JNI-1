@@ -12,6 +12,11 @@ android {
         versionName "1.0"
         ndk {
             moduleName "hello" // <-- This is the name of my C++ module!
+            //cFlags "-DANDROID_NDK -D_DEBUG DNULL=0"   // Define some macros
+            //ldLibs "EGL", "GLESv3", "dl", "log"       // Link with these libraries! 在这里添加你原先在makefile里ldlibs所链接的库
+            stl "stlport_shared"                    // Use shared stlport library
+            ldLibs "log", "z", "m"
+            abiFilters "armeabi", "armeabi-v7a", "x86"
         }
     }
 
@@ -21,6 +26,30 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    //可以自定义JNI文件目录。默认在/src/main/jni/下
+    //sourceSets.main {
+      //  jni.srcDirs 'src/main/source'
+    //}
+
+    //分平台编译（可选）
+    /*productFlavors {
+        x86 {
+            ndk {
+                abiFilter "x86"
+            }
+        }
+        arm {
+            ndk {
+                abiFilter "armeabi-v7a"
+            }
+        }
+        mips {
+            ndk {
+                abiFilter "mips"
+            }
+        }
+    }*/
 }
 
 dependencies {
@@ -28,4 +57,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.2.1'
     compile 'com.android.support:design:23.2.1'
+    compile 'com.jakewharton:butterknife:7.0.1'
 }
